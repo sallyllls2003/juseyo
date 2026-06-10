@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Jusaeyo — AI agent for life in Korea. Speak English. Live in Korea.">
+<meta property="og:title" content="jusaeyo. — Speak English. Live in Korea.">
+<meta property="og:description" content="One sentence in English. Your AI agent handles restaurants, taxis, and everything in between.">
+<meta property="og:type" content="website">
+<title>jusaeyo. — Speak English. Live in Korea.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --black:#0f0f0f;
+  --gray:#6b6b6b;
+  --light:#f5f5f3;
+  --border:#e8e8e4;
+  --gold:#b08d57;
+  --green:#16a34a;
+  --green-bg:#f0fdf4;
+  --green-border:#bbf7d0;
+}
+html{scroll-behavior:smooth}
+body{background:#fff;color:var(--black);font-family:'Inter',sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+
+/* NAV */
+nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 3rem;height:64px;border-bottom:1px solid var(--border);
+  position:sticky;top:0;background:rgba(255,255,255,0.95);
+  backdrop-filter:blur(8px);z-index:50;
+}
+.logo{font-family:'Instrument Serif',serif;font-size:1.35rem;color:var(--black);text-decoration:none}
+.logo-dot{color:var(--gold)}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{color:var(--gray);text-decoration:none;font-size:0.875rem;transition:color .15s}
+.nav-links a:hover{color:var(--black)}
+.nav-right{display:flex;gap:0.75rem;align-items:center}
+.btn-outline{
+  border:1px solid var(--border);color:var(--black);background:#fff;
+  padding:0.5rem 1.25rem;border-radius:6px;font-size:0.875rem;
+  text-decoration:none;transition:border-color .15s;cursor:pointer;
+  font-family:'Inter',sans-serif;display:inline-block;
+}
+.btn-outline:hover{border-color:#999}
+.btn-dark{
+  background:var(--black);color:#fff;
+  padding:0.5rem 1.25rem;border-radius:6px;font-size:0.875rem;
+  text-decoration:none;transition:opacity .15s;display:inline-block;
+}
+.btn-dark:hover{opacity:0.8}
+
+/* HERO */
+.hero{
+  padding:7rem 3rem 6rem;max-width:1100px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  font-size:0.78rem;color:var(--gray);letter-spacing:0.08em;text-transform:uppercase;
+  margin-bottom:2rem;
+}
+.hero-tag::before{content:'';width:20px;height:1px;background:var(--gray)}
+.hero h1{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(2.8rem,4.5vw,4rem);
+  line-height:1.1;font-weight:400;margin-bottom:1.5rem;
+}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero-sub{
+  color:var(--gray);font-size:1rem;line-height:1.75;
+  max-width:400px;margin-bottom:2.5rem;font-weight:300;
+}
+.hero-actions{display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap}
+.hero-note{font-size:0.78rem;color:var(--gray);margin-top:1rem}
+
+/* DEMO CARD */
+.demo-card{
+  background:var(--light);border-radius:16px;padding:1.5rem;
+  border:1px solid var(--border);
+}
+.demo-top{
+  display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem;
+  padding-bottom:1rem;border-bottom:1px solid var(--border);
+}
+.demo-avatar{
+  width:36px;height:36px;border-radius:50%;background:var(--black);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Instrument Serif',serif;color:#fff;font-size:0.9rem;flex-shrink:0;
+}
+.demo-name{font-size:0.9rem;font-weight:500}
+.demo-status{font-size:0.75rem;color:var(--gray);display:flex;align-items:center;gap:4px;margin-top:2px}
+.online-dot{width:5px;height:5px;border-radius:50%;background:#22c55e;display:inline-block}
+.msg-row{display:flex;gap:0.6rem;margin-bottom:1rem;align-items:flex-start}
+.msg-row.user{flex-direction:row-reverse}
+.bubble{
+  padding:0.7rem 1rem;border-radius:12px;font-size:0.85rem;line-height:1.55;max-width:82%;
+}
+.bubble.agent{background:#fff;border:1px solid var(--border);border-radius:4px 12px 12px 12px}
+.bubble.user{background:var(--black);color:#fff;border-radius:12px 4px 12px 12px}
+.bav{
+  width:28px;height:28px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:0.7rem;
+}
+.bav.a{background:var(--black);color:#fff;font-family:'Instrument Serif',serif}
+.bav.u{background:var(--border);color:var(--gray)}
+.confirm-box{
+  background:#fff;border:1px solid var(--border);border-radius:10px;
+  padding:0.9rem;margin-top:0.6rem;
+}
+.crow{display:flex;justify-content:space-between;padding:0.3rem 0;font-size:0.82rem}
+.crow:not(:last-child){border-bottom:1px solid var(--border)}
+.clabel{color:var(--gray)}
+.cbtns{display:flex;gap:0.5rem;margin-top:0.75rem}
+.cbtn{
+  flex:1;padding:0.55rem;border-radius:7px;font-size:0.8rem;
+  font-weight:500;cursor:pointer;border:none;font-family:'Inter',sans-serif;
+}
+.cbtn.yes{background:var(--black);color:#fff}
+.cbtn.no{background:var(--border);color:var(--gray)}
+.demo-input{
+  display:flex;gap:0.5rem;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);
+}
+.demo-input input{
+  flex:1;border:1px solid var(--border);border-radius:8px;padding:0.6rem 0.9rem;
+  font-size:0.85rem;font-family:'Inter',sans-serif;outline:none;background:#fff;
+}
+.demo-input input:focus{border-color:#999}
+.demo-send{
+  width:34px;height:34px;border-radius:7px;background:var(--black);
+  border:none;color:#fff;font-size:0.9rem;cursor:pointer;
+}
+
+/* TRUST */
+.trust{
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:1.5rem 3rem;display:flex;align-items:center;gap:3rem;flex-wrap:wrap;
+}
+.trust-label{font-size:0.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.08em;white-space:nowrap}
+.trust-items{display:flex;gap:2.5rem;align-items:center;flex-wrap:wrap}
+.trust-item{font-size:0.85rem;color:#bbb;font-weight:400}
+
+/* FEATURES */
+.features{padding:6rem 3rem;max-width:1100px;margin:0 auto}
+.section-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3.5rem;flex-wrap:wrap;gap:1rem}
+.section-kicker{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--gray);margin-bottom:0.6rem}
+.section-title{font-family:'Instrument Serif',serif;font-size:clamp(1.8rem,3vw,2.4rem);font-weight:400;line-height:1.15}
+.section-desc{color:var(--gray);font-size:0.88rem;max-width:260px;line-height:1.65;font-weight:300}
+.feat-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;
+}
+.feat-item{background:#fff;padding:2rem;transition:background .15s}
+.feat-item:hover{background:var(--light)}
+.feat-num{font-size:0.7rem;color:var(--gray);margin-bottom:1rem;letter-spacing:0.05em}
+.feat-icon{font-size:1.4rem;margin-bottom:0.9rem}
+.feat-name{font-weight:500;margin-bottom:0.35rem;font-size:0.93rem}
+.feat-desc{font-size:0.82rem;color:var(--gray);line-height:1.6;font-weight:300}
+.feat-tag{
+  display:inline-block;margin-top:0.7rem;font-size:0.7rem;
+  padding:0.2rem 0.6rem;border-radius:100px;letter-spacing:0.04em;
+}
+.ft-live{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.ft-soon{background:#fef9ee;color:#92400e;border:1px solid #fde68a}
+
+/* HOW */
+.how{padding:6rem 3rem;background:var(--light)}
+.how-inner{max-width:1100px;margin:0 auto}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3.5rem}
+.step{padding:2rem;background:#fff;border-radius:12px;border:1px solid var(--border)}
+.step-n{
+  font-family:'Instrument Serif',serif;font-size:2.5rem;
+  color:var(--border);line-height:1;margin-bottom:1rem;
+}
+.step h3{font-size:0.93rem;font-weight:500;margin-bottom:0.4rem}
+.step p{font-size:0.82rem;color:var(--gray);line-height:1.65;font-weight:300}
+
+/* WAITLIST */
+.waitlist{
+  padding:6rem 3rem;max-width:600px;margin:0 auto;text-align:center;
+}
+.wl-title{font-family:'Instrument Serif',serif;font-size:clamp(2rem,4vw,3rem);font-weight:400;margin-bottom:0.75rem}
+.wl-sub{color:var(--gray);font-size:0.95rem;margin-bottom:2.5rem;font-weight:300;line-height:1.7}
+.wl-form{display:flex;gap:0.75rem;max-width:440px;margin:0 auto;flex-wrap:wrap;justify-content:center}
+.wl-input{
+  flex:1;min-width:220px;border:1px solid var(--border);border-radius:8px;
+  padding:0.8rem 1.1rem;font-size:0.95rem;font-family:'Inter',sans-serif;
+  outline:none;color:var(--black);
+}
+.wl-input:focus{border-color:#999}
+.wl-input::placeholder{color:#bbb}
+.wl-btn{
+  background:var(--black);color:#fff;border:none;
+  padding:0.8rem 1.75rem;border-radius:8px;font-size:0.95rem;
+  font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;
+  transition:opacity .15s;white-space:nowrap;
+}
+.wl-btn:hover{opacity:0.8}
+.wl-note{font-size:0.78rem;color:var(--gray);margin-top:1rem}
+.wl-success{
+  display:none;background:var(--green-bg);border:1px solid var(--green-border);
+  border-radius:10px;padding:1.2rem;color:var(--green);font-size:0.9rem;margin-top:1rem;
+}
+
+/* PRICING */
+.pricing{padding:6rem 3rem;max-width:1000px;margin:0 auto;text-align:center}
+.pricing-sub{color:var(--gray);font-size:0.9rem;margin:0.5rem 0 3.5rem;font-weight:300}
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;text-align:left}
+.pc{border:1px solid var(--border);border-radius:12px;padding:2rem;position:relative}
+.pc.featured{border:1.5px solid var(--black);background:var(--black);color:#fff}
+.pc-badge{
+  position:absolute;top:-1px;left:50%;transform:translateX(-50%);
+  background:var(--black);color:#fff;font-size:0.68rem;
+  padding:0.25rem 0.75rem;border-radius:0 0 6px 6px;
+  letter-spacing:0.04em;white-space:nowrap;
+}
+.pc.featured .pc-badge{background:#fff;color:var(--black)}
+.pc-tier{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--gray);margin-bottom:0.75rem}
+.pc.featured .pc-tier{color:#888}
+.pc-price{font-family:'Instrument Serif',serif;font-size:3rem;line-height:1;font-weight:400}
+.pc-meta{font-size:0.78rem;color:var(--gray);margin:0.4rem 0 1.25rem}
+.pc.featured .pc-meta{color:#999}
+.pc-best{font-size:0.8rem;color:var(--gray);padding-bottom:1rem;margin-bottom:1rem;border-bottom:1px solid var(--border)}
+.pc.featured .pc-best{color:#aaa;border-color:#2a2a2a}
+.pc-list{list-style:none;display:flex;flex-direction:column;gap:0.4rem}
+.pc-list li{font-size:0.82rem;color:var(--gray);display:flex;gap:0.4rem}
+.pc.featured .pc-list li{color:#ccc}
+.pc-list li::before{content:'–';flex-shrink:0;color:#ccc}
+.pc.featured .pc-list li::before{color:#555}
+.pc-cta{
+  display:block;margin-top:1.75rem;padding:0.7rem;border-radius:7px;
+  text-align:center;font-size:0.85rem;font-weight:500;text-decoration:none;
+  border:1px solid var(--border);color:var(--black);transition:background .15s;cursor:pointer;
+}
+.pc-cta:hover{background:var(--light)}
+.pc.featured .pc-cta{background:#fff;color:var(--black);border:none}
+.pc.featured .pc-cta:hover{opacity:0.9}
+
+/* CTA BAND */
+.cta-band{background:var(--black);color:#fff;padding:5rem 3rem;text-align:center}
+.cta-band h2{font-family:'Instrument Serif',serif;font-size:clamp(2rem,4vw,3rem);font-weight:400;margin-bottom:0.75rem}
+.cta-band p{color:#888;font-size:0.95rem;margin-bottom:2rem;font-weight:300}
+.btn-white{
+  background:#fff;color:var(--black);padding:0.85rem 2.5rem;
+  border-radius:8px;font-size:0.95rem;font-weight:500;text-decoration:none;
+  display:inline-block;transition:opacity .15s;
+}
+.btn-white:hover{opacity:0.88}
+
+/* FOOTER */
+footer{
+  padding:2rem 3rem;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;
+}
+.footer-logo{font-family:'Instrument Serif',serif;font-size:1.1rem;color:var(--black)}
+.footer-logo span{color:var(--gold)}
+.footer-copy{font-size:0.78rem;color:var(--gray)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  nav{padding:0 1.5rem}
+  .nav-links{display:none}
+  .hero{grid-template-columns:1fr;padding:4rem 1.5rem;gap:3rem}
+  .trust{padding:1.5rem}
+  .features,.pricing{padding:4rem 1.5rem}
+  .feat-grid{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr}
+  .price-grid{grid-template-columns:1fr}
+  .how{padding:4rem 1.5rem}
+  .waitlist{padding:4rem 1.5rem}
+  footer{padding:2rem 1.5rem;flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">jusaeyo<span class="logo-dot">.</span></a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="#waitlist" class="btn-outline">Join waitlist</a>
+    <a href="#waitlist" class="btn-dark">Try free</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-tag">AI Agent for Life in Korea</div>
+    <h1>Speak English.<br><em>Live</em> in Korea.</h1>
+    <p class="hero-sub">
+      One sentence in English — Jusaeyo books your restaurant, calls your taxi, and navigates Korean platforms so you don't have to.
+    </p>
+    <div class="hero-actions">
+      <a href="#waitlist" class="btn-dark">Join the waitlist →</a>
+      <a href="#how" class="btn-outline">See how it works</a>
+    </div>
+    <p class="hero-note">Free to join. Early access coming soon.</p>
+  </div>
+  <div>
+    <div class="demo-card">
+      <div class="demo-top">
+        <div class="demo-avatar">주</div>
+        <div>
+          <div class="demo-name">Jusaeyo</div>
+          <div class="demo-status"><span class="online-dot"></span> Catch Table &amp; Kakao T ready</div>
+        </div>
+      </div>
+      <div class="msg-row user">
+        <div class="bav u">E</div>
+        <div class="bubble user">Book me a table for 2 tonight near Gwanghwamun, 7:30pm. Italian place.</div>
+      </div>
+      <div class="msg-row">
+        <div class="bav a">주</div>
+        <div class="bubble agent">
+          Found one on Catch Table.
+          <div class="confirm-box">
+            <div class="crow"><span class="clabel">Restaurant</span><span>Pasta Oggi 광화문</span></div>
+            <div class="crow"><span class="clabel">Time</span><span>Tonight · 7:30 PM · 2 people</span></div>
+            <div class="crow"><span class="clabel">Avg cost</span><span>~₩35,000 / person</span></div>
+            <div class="cbtns">
+              <button class="cbtn yes" onclick="this.textContent='Confirmed ✓';this.style.background='#16a34a'">Confirm</button>
+              <button class="cbtn no">Other options</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-input">
+        <input type="text" placeholder="What do you need in Korea?" id="demo-inp" onkeydown="if(event.key==='Enter')sendDemo()"/>
+        <button class="demo-send" onclick="sendDemo()">→</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<div class="trust">
+  <div class="trust-label">Works with</div>
+  <div class="trust-items">
+    <span class="trust-item">Catch Table</span>
+    <span class="trust-item">Kakao T</span>
+    <span class="trust-item">Uber Korea</span>
+    <span class="trust-item">Naver Maps</span>
+    <span class="trust-item">K.ride</span>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="features" id="services">
+  <div class="section-header">
+    <div>
+      <div class="section-kicker">Services</div>
+      <div class="section-title">Everything you need<br>to live here.</div>
+    </div>
+    <div class="section-desc">From dinner reservations to getting across the city — one assistant handles both worlds.</div>
+  </div>
+  <div class="feat-grid">
+    <div class="feat-item">
+      <div class="feat-num">01</div>
+      <div class="feat-icon">🍽️</div>
+      <div class="feat-name">Restaurant booking</div>
+      <div class="feat-desc">Catch Table and Naver Reservations. Search, compare, and book entirely in English.</div>
+      <span class="feat-tag ft-live">Live</span>
+    </div>
+    <div class="feat-item">
+      <div class="feat-num">02</div>
+      <div class="feat-icon">🚖</div>
+      <div class="feat-name">Ride routing</div>
+      <div class="feat-desc">Smart routing between Uber and Kakao T based on your payment method and availability.</div>
+      <span class="feat-tag ft-live">Live</span>
+    </div>
+    <div class="feat-item">
+      <div class="feat-num">03</div>
+      <div class="feat-icon">🗺️</div>
+      <div class="feat-name">Navigation</div>
+      <div class="feat-desc">Naver Maps accuracy delivered in English. No more switching between two map apps.</div>
+      <span class="feat-tag ft-live">Live</span>
+    </div>
+    <div class="feat-item">
+      <div class="feat-num">04</div>
+      <div class="feat-icon">🏥</div>
+      <div class="feat-name">Medical help</div>
+      <div class="feat-desc">Find English-speaking hospitals near you and book appointments — even at 2 AM.</div>
+      <span class="feat-tag ft-soon">Coming soon</span>
+    </div>
+    <div class="feat-item">
+      <div class="feat-num">05</div>
+      <div class="feat-icon">📦</div>
+      <div class="feat-name">Food delivery</div>
+      <div class="feat-desc">Baemin and Coupang Eats, with menus translated and orders placed in English.</div>
+      <span class="feat-tag ft-soon">Coming soon</span>
+    </div>
+    <div class="feat-item">
+      <div class="feat-num">06</div>
+      <div class="feat-icon">🏛️</div>
+      <div class="feat-name">Government admin</div>
+      <div class="feat-desc">Alien registration, address changes, and civic paperwork — guided step by step.</div>
+      <span class="feat-tag ft-soon">Coming soon</span>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="how" id="how">
+  <div class="how-inner">
+    <div class="section-kicker">How it works</div>
+    <div class="section-title" style="margin-top:0.5rem">Three steps. No learning curve.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-n">01</div>
+        <h3>Connect your accounts</h3>
+        <p>Log in to Catch Table and Kakao T once. Your session stays on your device — we never store your password.</p>
+      </div>
+      <div class="step">
+        <div class="step-n">02</div>
+        <h3>Say what you need</h3>
+        <p>Type naturally in English. Jusaeyo understands your intent and picks the right Korean platform automatically.</p>
+      </div>
+      <div class="step">
+        <div class="step-n">03</div>
+        <h3>Confirm &amp; done</h3>
+        <p>You approve before anything happens. After that, it's complete — with a confirmation and clear summary.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section class="waitlist" id="waitlist">
+  <div class="section-kicker">Early access</div>
+  <div class="wl-title">Be the first to know.</div>
+  <p class="wl-sub">Jusaeyo is launching soon. Join the waitlist and get early access plus 10 free bonus actions when we open.</p>
+  <div class="wl-form">
+    <input class="wl-input" type="email" id="email-input" placeholder="your@email.com" />
+    <button class="wl-btn" onclick="joinWaitlist()">Join waitlist →</button>
+  </div>
+  <p class="wl-note">No spam. Just your early access invite.</p>
+  <div class="wl-success" id="wl-success">
+    ✓ You're on the list! We'll reach out when early access opens.
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="section-kicker">Pricing</div>
+  <div class="section-title" style="margin-top:0.5rem">Pay for your trip,<br>not forever.</div>
+  <p class="pricing-sub">Start with 3 free actions. No credit card required.</p>
+  <div class="price-grid">
+    <div class="pc">
+      <div class="pc-tier">Starter</div>
+      <div class="pc-price">$5</div>
+      <div class="pc-meta">30 actions · valid 90 days</div>
+      <div class="pc-best">Best for 1–2 day trips</div>
+      <ul class="pc-list">
+        <li>Restaurant reservations</li>
+        <li>Taxi &amp; ride routing</li>
+        <li>English navigation</li>
+      </ul>
+      <a href="#waitlist" class="pc-cta">Join waitlist</a>
+    </div>
+    <div class="pc featured">
+      <div class="pc-badge">Most popular</div>
+      <div class="pc-tier">Traveler</div>
+      <div class="pc-price">$19</div>
+      <div class="pc-meta">200 actions · valid 90 days</div>
+      <div class="pc-best">Best for 5–7 day trips</div>
+      <ul class="pc-list">
+        <li>Everything in Starter</li>
+        <li>Priority reservations</li>
+        <li>Add more actions anytime</li>
+        <li>24/7 agent support</li>
+      </ul>
+      <a href="#waitlist" class="pc-cta">Join waitlist</a>
+    </div>
+    <div class="pc">
+      <div class="pc-tier">Resident</div>
+      <div class="pc-price">$59</div>
+      <div class="pc-meta">1,000 actions · valid 90 days</div>
+      <div class="pc-best">Best for long-term stay</div>
+      <ul class="pc-list">
+        <li>Everything in Traveler</li>
+        <li>Medical booking</li>
+        <li>Food delivery</li>
+        <li>Government admin help</li>
+      </ul>
+      <a href="#waitlist" class="pc-cta">Join waitlist</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-band">
+  <h2>Ready to live freely in Korea?</h2>
+  <p>Join thousands of foreigners who stopped struggling with Korean apps.</p>
+  <a href="#waitlist" class="btn-white">Join the waitlist →</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">jusaeyo<span>.</span></div>
+  <div class="footer-copy">© 2025 Jusaeyo · Speak English. Live in Korea.</div>
+</footer>
+
+<script>
+function sendDemo(){
+  const inp=document.getElementById('demo-inp');
+  const val=inp.value.trim();
+  if(!val)return;
+  inp.value='';
+  inp.placeholder='Got it — working on it...';
+  setTimeout(()=>{inp.placeholder='What do you need in Korea?'},2000);
+}
+function joinWaitlist(){
+  const email=document.getElementById('email-input').value.trim();
+  if(!email||!email.includes('@')){
+    document.getElementById('email-input').style.borderColor='#ef4444';
+    setTimeout(()=>{document.getElementById('email-input').style.borderColor=''},1500);
+    return;
+  }
+  document.querySelector('.wl-form').style.display='none';
+  document.querySelector('.wl-note').style.display='none';
+  document.getElementById('wl-success').style.display='block';
+}
+</script>
+</body>
+</html>
