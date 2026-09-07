@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>jusaeyo. — Chat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--black:#0f0f0f;--gray:#6b6b6b;--light:#f7f7f5;--border:#e8e8e4;--gold:#b08d57;--green:#16a34a;--green-bg:#f0fdf4;--green-border:#bbf7d0}
+body{background:#fff;color:var(--black);font-family:'Inter',sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+
+/* NAV */
+.top-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 1.5rem;height:56px;border-bottom:1px solid var(--border);
+  flex-shrink:0;background:#fff;
+}
+.logo{font-family:'Instrument Serif',serif;font-size:1.2rem;color:var(--black);text-decoration:none}
+.logo span{color:var(--gold)}
+.top-center{display:flex;align-items:center;gap:0.6rem}
+.agent-av{width:28px;height:28px;border-radius:50%;background:var(--black);display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;color:#fff;font-size:0.72rem}
+.agent-name{font-size:0.88rem;font-weight:500}
+.agent-status{font-size:0.72rem;color:var(--gray);display:flex;align-items:center;gap:3px}
+.odot{width:5px;height:5px;border-radius:50%;background:#22c55e;display:inline-block}
+.top-right{display:flex;gap:0.5rem}
+.icon-btn{width:32px;height:32px;border-radius:7px;border:1px solid var(--border);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gray);transition:all .15s;text-decoration:none}
+.icon-btn:hover{border-color:#999;color:var(--black)}
+
+/* LAYOUT */
+.chat-layout{display:flex;flex:1;overflow:hidden}
+
+/* SIDEBAR */
+.sidebar{
+  width:240px;border-right:1px solid var(--border);
+  display:flex;flex-direction:column;flex-shrink:0;
+  background:var(--light);
+}
+.sidebar-top{padding:1rem;border-bottom:1px solid var(--border)}
+.new-chat-btn{
+  width:100%;padding:0.6rem;border-radius:8px;
+  background:var(--black);color:#fff;border:none;
+  font-size:0.83rem;font-weight:500;cursor:pointer;
+  font-family:'Inter',sans-serif;transition:opacity .15s;
+  display:flex;align-items:center;justify-content:center;gap:0.4rem;
+}
+.new-chat-btn:hover{opacity:0.82}
+.sidebar-section{padding:0.75rem 1rem 0.25rem}
+.sidebar-label{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--gray);margin-bottom:0.5rem}
+.chat-item{
+  padding:0.55rem 0.75rem;border-radius:7px;font-size:0.82rem;
+  cursor:pointer;color:var(--gray);transition:all .15s;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.chat-item:hover{background:#ebebea;color:var(--black)}
+.chat-item.active{background:#e2e2e0;color:var(--black);font-weight:500}
+
+.quick-section{padding:0.75rem 1rem}
+.quick-label{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--gray);margin-bottom:0.6rem}
+.quick-chip{
+  display:flex;align-items:center;gap:0.4rem;
+  padding:0.45rem 0.65rem;border-radius:7px;
+  font-size:0.8rem;color:var(--gray);cursor:pointer;
+  transition:all .15s;margin-bottom:0.25rem;
+}
+.quick-chip:hover{background:#ebebea;color:var(--black)}
+.qicon{font-size:0.9rem}
+
+/* MAIN CHAT */
+.chat-main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.messages{flex:1;overflow-y:auto;padding:2rem 1.5rem;display:flex;flex-direction:column;gap:1.5rem}
+.messages::-webkit-scrollbar{width:4px}
+.messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+.msg-group{display:flex;gap:0.75rem;align-items:flex-start;max-width:720px;width:100%}
+.msg-group.user{flex-direction:row-reverse;align-self:flex-end}
+.msg-group.agent{align-self:flex-start}
+.msg-av{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.7rem;margin-top:2px}
+.msg-av.a{background:var(--black);color:#fff;font-family:'Instrument Serif',serif}
+.msg-av.u{background:var(--border);color:var(--gray)}
+.msg-content{display:flex;flex-direction:column;gap:0.4rem;max-width:calc(100% - 42px)}
+.bubble{padding:0.75rem 1rem;border-radius:12px;font-size:0.88rem;line-height:1.6}
+.bubble.a{background:var(--light);border:1px solid var(--border);border-radius:3px 12px 12px 12px}
+.bubble.u{background:var(--black);color:#fff;border-radius:12px 3px 12px 12px}
+.msg-time{font-size:0.68rem;color:var(--gray);padding:0 0.25rem}
+.msg-group.user .msg-time{text-align:right}
+
+/* ACTION CARDS */
+.action-card{
+  background:#fff;border:1px solid var(--border);border-radius:12px;
+  overflow:hidden;margin-top:0.25rem;max-width:340px;
+}
+.ac-header{padding:0.75rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0.5rem}
+.ac-icon{font-size:1.1rem}
+.ac-title{font-size:0.8rem;font-weight:500}
+.ac-badge{font-size:0.65rem;padding:0.15rem 0.5rem;border-radius:100px;background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);margin-left:auto}
+.ac-body{padding:0.75rem 1rem}
+.ac-row{display:flex;justify-content:space-between;align-items:center;padding:0.3rem 0;font-size:0.82rem}
+.ac-row:not(:last-child){border-bottom:1px solid var(--border)}
+.ac-label{color:var(--gray)}
+.ac-val{font-weight:400}
+.ac-btns{display:flex;gap:0.5rem;padding:0.75rem 1rem;border-top:1px solid var(--border)}
+.ac-btn{flex:1;padding:0.55rem;border-radius:7px;font-size:0.8rem;font-weight:500;cursor:pointer;border:none;font-family:'Inter',sans-serif;transition:all .15s}
+.ac-btn.confirm{background:var(--black);color:#fff}
+.ac-btn.confirm:hover{opacity:0.82}
+.ac-btn.alt{background:var(--light);color:var(--gray);border:1px solid var(--border)}
+.ac-btn.alt:hover{color:var(--black);border-color:#999}
+
+.ride-option{display:flex;align-items:center;justify-content:space-between;padding:0.5rem 0;font-size:0.82rem}
+.ride-option:not(:last-child){border-bottom:1px solid var(--border)}
+.ride-left{display:flex;align-items:center;gap:0.5rem}
+.ride-badge{font-size:0.65rem;padding:0.12rem 0.45rem;border-radius:100px;background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.ride-muted{color:var(--gray);font-size:0.75rem}
+
+/* TYPING INDICATOR */
+.typing{display:flex;align-items:center;gap:4px;padding:0.75rem 1rem;background:var(--light);border:1px solid var(--border);border-radius:3px 12px 12px 12px;width:fit-content}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--gray);animation:bounce 1.2s infinite}
+.typing span:nth-child(2){animation-delay:.2s}
+.typing span:nth-child(3){animation-delay:.4s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+
+/* SUGGESTIONS (empty state) */
+.empty-state{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:2rem;text-align:center;gap:2rem;
+}
+.empty-logo{font-family:'Instrument Serif',serif;font-size:2rem;color:var(--black)}
+.empty-logo span{color:var(--gold)}
+.empty-sub{color:var(--gray);font-size:0.9rem;font-weight:300}
+.suggestion-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;width:100%;max-width:480px}
+.suggestion-card{
+  border:1px solid var(--border);border-radius:10px;padding:0.9rem;
+  cursor:pointer;transition:all .15s;text-align:left;background:#fff;
+}
+.suggestion-card:hover{border-color:#999;background:var(--light)}
+.sg-icon{font-size:1.1rem;margin-bottom:0.4rem}
+.sg-title{font-size:0.83rem;font-weight:500;margin-bottom:0.2rem}
+.sg-desc{font-size:0.75rem;color:var(--gray);font-weight:300}
+
+/* INPUT AREA */
+.input-area{
+  padding:1rem 1.5rem;border-top:1px solid var(--border);
+  background:#fff;flex-shrink:0;
+}
+.input-wrap{
+  display:flex;gap:0.6rem;align-items:flex-end;
+  border:1px solid var(--border);border-radius:12px;padding:0.6rem 0.75rem;
+  transition:border-color .15s;background:#fff;
+}
+.input-wrap:focus-within{border-color:#aaa}
+.chat-textarea{
+  flex:1;border:none;outline:none;font-size:0.9rem;font-family:'Inter',sans-serif;
+  resize:none;height:24px;max-height:120px;line-height:1.5;color:var(--black);
+  background:transparent;
+}
+.chat-textarea::placeholder{color:#bbb}
+.send-btn{
+  width:32px;height:32px;border-radius:7px;background:var(--black);
+  border:none;color:#fff;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;font-size:0.9rem;transition:opacity .15s;flex-shrink:0;
+}
+.send-btn:hover{opacity:0.82}
+.send-btn:disabled{opacity:0.3;cursor:default}
+.input-hint{font-size:0.72rem;color:var(--gray);margin-top:0.5rem;text-align:center}
+
+/* SERVICE CHIPS IN INPUT */
+.chip-row{display:flex;gap:0.4rem;margin-bottom:0.65rem;flex-wrap:wrap}
+.inp-chip{
+  display:inline-flex;align-items:center;gap:0.25rem;
+  padding:0.3rem 0.65rem;border-radius:100px;font-size:0.75rem;
+  border:1px solid var(--border);background:#fff;color:var(--gray);
+  cursor:pointer;transition:all .15s;
+}
+.inp-chip:hover{border-color:var(--black);color:var(--black)}
+
+@media(max-width:768px){
+  .sidebar{display:none}
+  .messages{padding:1.25rem 1rem}
+  .input-area{padding:0.75rem 1rem}
+  .suggestion-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="index.html" class="logo">jusaeyo<span>.</span></a>
+  <div class="top-center">
+    <div class="agent-av">주</div>
+    <div>
+      <div class="agent-name">Jusaeyo</div>
+      <div class="agent-status"><span class="odot"></span> Online</div>
+    </div>
+  </div>
+  <div class="top-right">
+    <a href="index.html" class="icon-btn" title="Home">←</a>
+    <button class="icon-btn" title="New chat" onclick="resetChat()">✦</button>
+  </div>
+</div>
+
+<div class="chat-layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-top">
+      <button class="new-chat-btn" onclick="resetChat()">+ New chat</button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Recent</div>
+      <div class="chat-item active">Italian near Gwanghwamun</div>
+      <div class="chat-item" onclick="loadScenario('taxi')">Taxi to COEX</div>
+      <div class="chat-item" onclick="loadScenario('hospital')">Hospital near Itaewon</div>
+    </div>
+    <div class="quick-section">
+      <div class="quick-label">Quick actions</div>
+      <div class="quick-chip" onclick="sendQuick('Find me a restaurant nearby')"><span class="qicon">🍽️</span> Find restaurant</div>
+      <div class="quick-chip" onclick="sendQuick('Call me a taxi to Hongdae')"><span class="qicon">🚖</span> Book a ride</div>
+      <div class="quick-chip" onclick="sendQuick('Find an English-speaking hospital near me')"><span class="qicon">🏥</span> Find hospital</div>
+      <div class="quick-chip" onclick="sendQuick('Order food delivery to my location')"><span class="qicon">🛵</span> Food delivery</div>
+      <div class="quick-chip" onclick="sendQuick('Navigate me to Gyeongbokgung Palace')"><span class="qicon">🗺️</span> Get directions</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="chat-main">
+
+    <!-- EMPTY STATE -->
+    <div class="empty-state" id="empty-state">
+      <div>
+        <div class="empty-logo">jusaeyo<span>.</span></div>
+        <p class="empty-sub" style="margin-top:0.5rem">What do you need in Korea today?</p>
+      </div>
+      <div class="suggestion-grid">
+        <div class="suggestion-card" onclick="sendQuick('Book me a table for 2 tonight near Gangnam, 7pm. Korean BBQ.')">
+          <div class="sg-icon">🍽️</div>
+          <div class="sg-title">Book a restaurant</div>
+          <div class="sg-desc">"Find Italian near Gwanghwamun for 2"</div>
+        </div>
+        <div class="suggestion-card" onclick="sendQuick('Call me a taxi from Hongdae to COEX. Which is faster, Uber or Kakao?')">
+          <div class="sg-icon">🚖</div>
+          <div class="sg-title">Get a ride</div>
+          <div class="sg-desc">"Taxi from Hongdae to COEX"</div>
+        </div>
+        <div class="suggestion-card" onclick="sendQuick('Find me an English-speaking doctor or clinic near Itaewon, open now')">
+          <div class="sg-icon">🏥</div>
+          <div class="sg-title">Find a hospital</div>
+          <div class="sg-desc">"English-speaking clinic near me"</div>
+        </div>
+        <div class="suggestion-card" onclick="sendQuick('Navigate me from Myeongdong to Gyeongbokgung Palace by subway')">
+          <div class="sg-icon">🗺️</div>
+          <div class="sg-title">Get directions</div>
+          <div class="sg-desc">"Myeongdong to Gyeongbokgung"</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MESSAGES -->
+    <div class="messages" id="messages" style="display:none"></div>
+
+    <!-- INPUT -->
+    <div class="input-area">
+      <div class="chip-row">
+        <span class="inp-chip" onclick="sendQuick('Find a restaurant on Catch Table near me')">🍽️ Catch Table</span>
+        <span class="inp-chip" onclick="sendQuick('Book a Kakao T taxi for me')">🚖 Kakao T</span>
+        <span class="inp-chip" onclick="sendQuick('Get me an Uber ride')">🚗 Uber</span>
+        <span class="inp-chip" onclick="sendQuick('Order delivery from Baemin')">🛵 Baemin</span>
+        <span class="inp-chip" onclick="sendQuick('Show me directions on Naver Maps')">🗺️ Maps</span>
+        <span class="inp-chip" onclick="sendQuick('Order from Coupang Eats')">📦 Coupang Eats</span>
+      </div>
+      <div class="input-wrap">
+        <textarea class="chat-textarea" id="chat-input" placeholder="What do you need in Korea?" rows="1"
+          onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+        <button class="send-btn" id="send-btn" onclick="sendMessage()">→</button>
+      </div>
+      <div class="input-hint">Jusaeyo handles Korean apps so you don't have to · Demo mode</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── MOCK RESPONSES ──────────────────────────────────────────
+const responses = {
+  restaurant: {
+    text: "Found a great spot on Catch Table! 🍽️",
+    card: {
+      type: 'restaurant',
+      icon: '🍽️', title: 'Catch Table Booking', badge: 'Available',
+      rows: [
+        {label:'Restaurant', val:'Pasta Oggi 광화문'},
+        {label:'Time', val:'Tonight · 7:30 PM · 2 people'},
+        {label:'Avg cost', val:'~₩35,000 / person'},
+        {label:'Rating', val:'★ 4.8 (English menu ✓)'},
+      ],
+      confirm:'Confirm booking', alt:'See other options'
+    }
+  },
+  taxi: {
+    text: "Checked both Uber and Kakao T for you! 🚖",
+    card: {
+      type: 'ride',
+      icon: '🚖', title: 'Ride Options', badge: 'Smart routing',
+      rides: [
+        {icon:'🚗', name:'Uber', time:'~22 min', price:'₩16,500', tag:'Recommended', note:'Works with your card'},
+        {icon:'🚕', name:'Kakao T', time:'~19 min', price:'₩12,000', tag:'', note:'Needs Korean card'},
+      ],
+      confirm:'Book Uber now', alt:'Book Kakao T'
+    }
+  },
+  hospital: {
+    text: "Found English-speaking clinics near you 🏥",
+    card: {
+      type: 'restaurant',
+      icon: '🏥', title: 'Nearby Clinic', badge: 'Open now',
+      rows: [
+        {label:'Clinic', val:'Itaewon International Clinic'},
+        {label:'Hours', val:'Open until 9 PM'},
+        {label:'Language', val:'English ✓ Japanese ✓'},
+        {label:'Wait time', val:'~15 min'},
+      ],
+      confirm:'Book appointment', alt:'See other clinics'
+    }
+  },
+  map: {
+    text: "Got your directions on Naver Maps! 🗺️",
+    card: {
+      type: 'restaurant',
+      icon: '🗺️', title: 'Naver Maps Route', badge: 'Fastest',
+      rows: [
+        {label:'Route', val:'Myeongdong → Gyeongbokgung'},
+        {label:'Method', val:'Subway Line 3'},
+        {label:'Duration', val:'~18 min · 2 stops'},
+        {label:'Fare', val:'₩1,400 (T-money)'},
+      ],
+      confirm:'Open in Naver Maps', alt:'Try another route'
+    }
+  },
+  delivery: {
+    text: "Found delivery options near you on Baemin 🛵",
+    card: {
+      type: 'restaurant',
+      icon: '🛵', title: 'Baemin Delivery', badge: 'Delivering now',
+      rows: [
+        {label:'Restaurant', val:'맘스터치 Mapo Branch'},
+        {label:'Delivery time', val:'~30 min'},
+        {label:'Min order', val:'₩15,000'},
+        {label:'Delivery fee', val:'₩3,000'},
+      ],
+      confirm:'Place order', alt:'Browse more options'
+    }
+  },
+  default: {
+    text: "I can help with that! Let me look into it for you.",
+    followup: "Could you give me a bit more detail? For example:\n• Which area are you in?\n• What time do you need this?\n• Any preferences I should know about?"
+  }
+};
+
+function detectIntent(text) {
+  const t = text.toLowerCase();
+  if (t.match(/restaur|food|eat|dinner|lunch|table|booking|italian|korean|sushi|bbq|catch/)) return 'restaurant';
+  if (t.match(/taxi|ride|uber|kakao|car|drive|pick.?up/)) return 'taxi';
+  if (t.match(/hospital|clinic|doctor|medical|sick|pain|emergency|health/)) return 'hospital';
+  if (t.match(/map|navig|direct|route|subway|metro|station|how.+get/)) return 'map';
+  if (t.match(/delivery|baemin|coupang|order|deliver/)) return 'delivery';
+  return 'default';
+}
+
+// ── STATE ──────────────────────────────────────────────────
+let chatStarted = false;
+
+function resetChat() {
+  document.getElementById('messages').innerHTML = '';
+  document.getElementById('messages').style.display = 'none';
+  document.getElementById('empty-state').style.display = 'flex';
+  chatStarted = false;
+}
+
+function showMessages() {
+  if (!chatStarted) {
+    document.getElementById('empty-state').style.display = 'none';
+    document.getElementById('messages').style.display = 'flex';
+    chatStarted = true;
+  }
+}
+
+// ── RENDER ─────────────────────────────────────────────────
+function addUserMsg(text) {
+  showMessages();
+  const msgs = document.getElementById('messages');
+  const time = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+  const el = document.createElement('div');
+  el.className = 'msg-group user';
+  el.innerHTML = `
+    <div class="av u">You</div>
+    <div class="msg-content">
+      <div class="bubble u">${escHtml(text)}</div>
+      <div class="msg-time">${time}</div>
+    </div>`;
+  msgs.appendChild(el);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function addTyping() {
+  const msgs = document.getElementById('messages');
+  const el = document.createElement('div');
+  el.className = 'msg-group agent';
+  el.id = 'typing-indicator';
+  el.innerHTML = `
+    <div class="av a">주</div>
+    <div class="msg-content">
+      <div class="typing"><span></span><span></span><span></span></div>
+    </div>`;
+  msgs.appendChild(el);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function removeTyping() {
+  const t = document.getElementById('typing-indicator');
+  if (t) t.remove();
+}
+
+function addAgentMsg(resp) {
+  const msgs = document.getElementById('messages');
+  const time = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+  const el = document.createElement('div');
+  el.className = 'msg-group agent';
+
+  let cardHtml = '';
+  if (resp.card) {
+    const c = resp.card;
+    if (c.type === 'ride') {
+      const ridesHtml = c.rides.map(r => `
+        <div class="ride-option">
+          <div class="ride-left">
+            <span>${r.icon}</span>
+            <div>
+              <div style="font-weight:500;font-size:0.82rem">${r.name} ${r.tag ? `<span class="ride-badge">${r.tag}</span>` : ''}</div>
+              <div class="ride-muted">${r.note} · ${r.time}</div>
+            </div>
+          </div>
+          <div style="font-weight:500;font-size:0.85rem">${r.price}</div>
+        </div>`).join('');
+      cardHtml = `
+        <div class="action-card">
+          <div class="ac-header"><span class="ac-icon">${c.icon}</span><span class="ac-title">${c.title}</span><span class="ac-badge">${c.badge}</span></div>
+          <div class="ac-body">${ridesHtml}</div>
+          <div class="ac-btns">
+            <button class="ac-btn confirm" onclick="confirmAction(this,'${c.confirm}')">${c.confirm}</button>
+            <button class="ac-btn alt">${c.alt}</button>
+          </div>
+        </div>`;
+    } else {
+      const rowsHtml = c.rows.map(r => `
+        <div class="ac-row"><span class="ac-label">${r.label}</span><span class="ac-val">${r.val}</span></div>`).join('');
+      cardHtml = `
+        <div class="action-card">
+          <div class="ac-header"><span class="ac-icon">${c.icon}</span><span class="ac-title">${c.title}</span><span class="ac-badge">${c.badge}</span></div>
+          <div class="ac-body">${rowsHtml}</div>
+          <div class="ac-btns">
+            <button class="ac-btn confirm" onclick="confirmAction(this,'${c.confirm}')">${c.confirm}</button>
+            <button class="ac-btn alt">${c.alt}</button>
+          </div>
+        </div>`;
+    }
+  }
+
+  let followHtml = '';
+  if (resp.followup) {
+    followHtml = `<div class="bubble a" style="margin-top:0.4rem;white-space:pre-line">${escHtml(resp.followup)}</div>`;
+  }
+
+  el.innerHTML = `
+    <div class="av a">주</div>
+    <div class="msg-content">
+      <div class="bubble a">${escHtml(resp.text)}</div>
+      ${cardHtml}
+      ${followHtml}
+      <div class="msg-time">${time}</div>
+    </div>`;
+  msgs.appendChild(el);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function confirmAction(btn, label) {
+  btn.textContent = 'Done! ✓';
+  btn.style.background = '#16a34a';
+  btn.disabled = true;
+  btn.nextElementSibling && (btn.nextElementSibling.disabled = true);
+
+  setTimeout(() => {
+    const msgs = document.getElementById('messages');
+    const el = document.createElement('div');
+    el.className = 'msg-group agent';
+    el.innerHTML = `
+      <div class="av a">주</div>
+      <div class="msg-content">
+        <div class="bubble a">✓ ${escHtml(label)} confirmed! You're all set. Anything else I can help with?</div>
+      </div>`;
+    msgs.appendChild(el);
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 600);
+}
+
+// ── SEND ───────────────────────────────────────────────────
+function sendMessage() {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  input.style.height = '24px';
+  addUserMsg(text);
+  addTyping();
+
+  const intent = detectIntent(text);
+  const delay = 900 + Math.random() * 600;
+
+  setTimeout(() => {
+    removeTyping();
+    addAgentMsg(responses[intent]);
+  }, delay);
+}
+
+function sendQuick(text) {
+  document.getElementById('chat-input').value = text;
+  sendMessage();
+}
+
+function loadScenario(type) {
+  resetChat();
+  setTimeout(() => {
+    const scenarios = {
+      taxi: 'Call me a taxi from Hongdae to COEX. Uber or Kakao, which is faster?',
+      hospital: 'Find me an English-speaking clinic near Itaewon, open now'
+    };
+    sendQuick(scenarios[type] || '');
+  }, 100);
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+}
+
+function autoResize(el) {
+  el.style.height = '24px';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── INIT ───────────────────────────────────────────────────
+const params = new URLSearchParams(window.location.search);
+const q = params.get('q');
+if (q) {
+  const autoMap = {
+    restaurant:'Book me a table for 2 tonight near Gangnam, 7pm.',
+    taxi:'Get me a taxi from Hongdae to COEX.',
+    uber:'Book an Uber ride for me.',
+    delivery:'Order food delivery near me on Baemin.',
+    delivery2:'Order from Coupang Eats near me.',
+    map:'Navigate me to Gyeongbokgung Palace from Myeongdong.'
+  };
+  if (autoMap[q]) setTimeout(() => sendQuick(autoMap[q]), 400);
+}
+</script>
+</body>
+</html>

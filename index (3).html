@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Jusaeyo — Your AI buddy for life in Korea. Restaurants, taxis, maps — all in plain English.">
+<meta property="og:title" content="jusaeyo. — Korea, but in plain English.">
+<meta property="og:description" content="No more switching apps. No more guessing what buttons mean. Just tell Jusaeyo what you need.">
+<meta property="og:type" content="website">
+<title>jusaeyo. — Korea, but in plain English.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--black:#0f0f0f;--gray:#6b6b6b;--light:#f7f7f5;--border:#e8e8e4;--gold:#b08d57;--green:#16a34a;--green-bg:#f0fdf4;--green-border:#bbf7d0}
+html{scroll-behavior:smooth}
+body{background:#fff;color:var(--black);font-family:'Inter',sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:60px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(255,255,255,0.96);backdrop-filter:blur(8px);z-index:50}
+.logo{font-family:'Instrument Serif',serif;font-size:1.3rem;color:var(--black);text-decoration:none}
+.logo span{color:var(--gold)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:var(--gray);text-decoration:none;font-size:0.85rem;transition:color .15s}
+.nav-links a:hover{color:var(--black)}
+.nav-right{display:flex;gap:0.6rem}
+.btn-sm{padding:0.45rem 1.1rem;border-radius:6px;font-size:0.85rem;text-decoration:none;transition:all .15s;display:inline-block;font-family:'Inter',sans-serif;cursor:pointer;border:none}
+.btn-outline{border:1px solid var(--border)!important;color:var(--black);background:#fff}
+.btn-outline:hover{border-color:#999!important}
+.btn-dark{background:var(--black);color:#fff}
+.btn-dark:hover{opacity:0.82}
+
+.hero{max-width:1080px;margin:0 auto;padding:5.5rem 2.5rem 4rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.hero-eyebrow{font-size:0.78rem;color:var(--gray);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:1.5rem;display:flex;align-items:center;gap:0.5rem}
+.hero-eyebrow::before{content:'';width:18px;height:1px;background:var(--gray)}
+.hero h1{font-family:'Instrument Serif',serif;font-size:clamp(2.6rem,4vw,3.8rem);line-height:1.08;font-weight:400;margin-bottom:1.25rem}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero-sub{color:var(--gray);font-size:0.97rem;line-height:1.8;max-width:380px;margin-bottom:2rem;font-weight:300}
+.hero-ctas{display:flex;gap:0.6rem;flex-wrap:wrap}
+.btn-primary{background:var(--black);color:#fff;padding:0.75rem 1.8rem;border-radius:8px;font-size:0.9rem;font-weight:500;text-decoration:none;transition:opacity .15s;display:inline-block}
+.btn-primary:hover{opacity:0.82}
+.btn-secondary{border:1px solid var(--border);color:var(--black);padding:0.75rem 1.8rem;border-radius:8px;font-size:0.9rem;text-decoration:none;transition:border-color .15s;display:inline-block}
+.btn-secondary:hover{border-color:#999}
+.hero-note{font-size:0.76rem;color:var(--gray);margin-top:0.9rem}
+
+.demo-card{background:var(--light);border-radius:18px;padding:1.4rem;border:1px solid var(--border)}
+.demo-top{display:flex;align-items:center;gap:0.7rem;padding-bottom:1rem;margin-bottom:1.2rem;border-bottom:1px solid var(--border)}
+.demo-av{width:34px;height:34px;border-radius:50%;background:var(--black);display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;color:#fff;font-size:0.85rem;flex-shrink:0}
+.demo-name{font-size:0.88rem;font-weight:500}
+.demo-status{font-size:0.72rem;color:var(--gray);display:flex;align-items:center;gap:3px;margin-top:1px}
+.odot{width:5px;height:5px;border-radius:50%;background:#22c55e;display:inline-block}
+.msg-row{display:flex;gap:0.55rem;margin-bottom:0.9rem;align-items:flex-start}
+.msg-row.u{flex-direction:row-reverse}
+.bub{padding:0.65rem 0.95rem;border-radius:11px;font-size:0.83rem;line-height:1.55;max-width:82%}
+.bub.a{background:#fff;border:1px solid var(--border);border-radius:3px 11px 11px 11px}
+.bub.u{background:var(--black);color:#fff;border-radius:11px 3px 11px 11px}
+.av{width:26px;height:26px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.65rem}
+.av.a{background:var(--black);color:#fff;font-family:'Instrument Serif',serif}
+.av.u{background:var(--border);color:var(--gray)}
+.cbox{background:#fff;border:1px solid var(--border);border-radius:9px;padding:0.8rem;margin-top:0.5rem}
+.crow{display:flex;justify-content:space-between;padding:0.28rem 0;font-size:0.8rem}
+.crow:not(:last-child){border-bottom:1px solid var(--border)}
+.cl{color:var(--gray)}
+.cbtns{display:flex;gap:0.4rem;margin-top:0.65rem}
+.cbtn{flex:1;padding:0.5rem;border-radius:6px;font-size:0.78rem;font-weight:500;cursor:pointer;border:none;font-family:'Inter',sans-serif}
+.cbtn.y{background:var(--black);color:#fff}
+.cbtn.n{background:var(--border);color:var(--gray)}
+.demo-input-wrap{margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)}
+.demo-input-row{display:flex;gap:0.45rem}
+.demo-input{flex:1;border:1px solid var(--border);border-radius:8px;padding:0.6rem 0.85rem;font-size:0.83rem;font-family:'Inter',sans-serif;outline:none;background:#fff;color:var(--black)}
+.demo-input:focus{border-color:#aaa}
+.demo-input::placeholder{color:#bbb}
+.demo-send{width:32px;height:32px;border-radius:7px;background:var(--black);border:none;color:#fff;font-size:0.85rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.service-chips{display:flex;gap:0.4rem;margin-top:0.65rem;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:0.3rem;padding:0.35rem 0.7rem;border-radius:100px;font-size:0.75rem;cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--gray);transition:all .15s;text-decoration:none}
+.chip:hover{border-color:var(--black);color:var(--black);background:var(--light)}
+
+.trust{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:1.25rem 2.5rem;display:flex;align-items:center;gap:2.5rem;flex-wrap:wrap}
+.trust-label{font-size:0.72rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.08em;white-space:nowrap}
+.trust-items{display:flex;gap:2rem;flex-wrap:wrap}
+.trust-item{font-size:0.82rem;color:#c0c0b8}
+
+.section{padding:5rem 2.5rem;max-width:1080px;margin:0 auto}
+.sec-kicker{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--gray);margin-bottom:0.6rem}
+.sec-title{font-family:'Instrument Serif',serif;font-size:clamp(1.7rem,2.8vw,2.3rem);font-weight:400;line-height:1.15;margin-bottom:0.5rem}
+.sec-sub{color:var(--gray);font-size:0.88rem;line-height:1.65;font-weight:300;max-width:320px}
+.sec-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem;flex-wrap:wrap;gap:1rem}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.feat-item{background:#fff;padding:1.75rem;transition:background .15s}
+.feat-item:hover{background:var(--light)}
+.feat-num{font-size:0.68rem;color:var(--gray);margin-bottom:0.9rem;letter-spacing:0.05em}
+.feat-icon{font-size:1.3rem;margin-bottom:0.8rem}
+.feat-name{font-weight:500;margin-bottom:0.3rem;font-size:0.9rem}
+.feat-desc{font-size:0.8rem;color:var(--gray);line-height:1.6;font-weight:300}
+.feat-tag{display:inline-block;margin-top:0.65rem;font-size:0.68rem;padding:0.18rem 0.55rem;border-radius:100px}
+.ft-live{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.ft-soon{background:#fef9ee;color:#92400e;border:1px solid #fde68a}
+
+.how{padding:5rem 2.5rem;background:var(--light)}
+.how-inner{max-width:1080px;margin:0 auto}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:3rem}
+.step{padding:1.75rem;background:#fff;border-radius:12px;border:1px solid var(--border)}
+.step-n{font-family:'Instrument Serif',serif;font-size:2.2rem;color:var(--border);line-height:1;margin-bottom:0.85rem}
+.step h3{font-size:0.9rem;font-weight:500;margin-bottom:0.35rem}
+.step p{font-size:0.8rem;color:var(--gray);line-height:1.65;font-weight:300}
+
+.waitlist{padding:5rem 2.5rem;max-width:560px;margin:0 auto;text-align:center}
+.wl-emoji{font-size:2rem;margin-bottom:1rem}
+.wl-title{font-family:'Instrument Serif',serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:400;margin-bottom:0.6rem}
+.wl-sub{color:var(--gray);font-size:0.9rem;margin-bottom:2rem;font-weight:300;line-height:1.75}
+.wl-form{display:flex;gap:0.6rem;max-width:420px;margin:0 auto;flex-wrap:wrap;justify-content:center}
+.wl-input{flex:1;min-width:200px;border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;font-size:0.9rem;font-family:'Inter',sans-serif;outline:none;color:var(--black)}
+.wl-input:focus{border-color:#999}
+.wl-input::placeholder{color:#bbb}
+.wl-btn{background:var(--black);color:#fff;border:none;padding:0.75rem 1.5rem;border-radius:8px;font-size:0.9rem;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;transition:opacity .15s;white-space:nowrap}
+.wl-btn:hover{opacity:0.82}
+.wl-note{font-size:0.76rem;color:var(--gray);margin-top:0.85rem}
+.wl-success{display:none;background:var(--green-bg);border:1px solid var(--green-border);border-radius:10px;padding:1rem;color:var(--green);font-size:0.88rem;margin-top:1rem}
+
+.pricing{padding:5rem 2.5rem;max-width:960px;margin:0 auto;text-align:center}
+.pricing-sub{color:var(--gray);font-size:0.88rem;margin:0.4rem 0 3rem;font-weight:300}
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;text-align:left}
+.pc{border:1px solid var(--border);border-radius:12px;padding:1.75rem;position:relative}
+.pc.featured{border:1.5px solid var(--black);background:var(--black);color:#fff}
+.pc-badge{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:var(--black);color:#fff;font-size:0.66rem;padding:0.22rem 0.7rem;border-radius:0 0 6px 6px;letter-spacing:0.04em;white-space:nowrap}
+.pc.featured .pc-badge{background:#fff;color:var(--black)}
+.pc-tier{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--gray);margin-bottom:0.7rem}
+.pc.featured .pc-tier{color:#888}
+.pc-price{font-family:'Instrument Serif',serif;font-size:2.8rem;line-height:1;font-weight:400}
+.pc-meta{font-size:0.76rem;color:var(--gray);margin:0.35rem 0 1.1rem}
+.pc.featured .pc-meta{color:#999}
+.pc-best{font-size:0.78rem;color:var(--gray);padding-bottom:0.9rem;margin-bottom:0.9rem;border-bottom:1px solid var(--border)}
+.pc.featured .pc-best{color:#aaa;border-color:#2a2a2a}
+.pc-list{list-style:none;display:flex;flex-direction:column;gap:0.38rem}
+.pc-list li{font-size:0.8rem;color:var(--gray);display:flex;gap:0.35rem}
+.pc.featured .pc-list li{color:#ccc}
+.pc-list li::before{content:'–';flex-shrink:0;color:#ccc}
+.pc.featured .pc-list li::before{color:#555}
+.pc-cta{display:block;margin-top:1.5rem;padding:0.65rem;border-radius:7px;text-align:center;font-size:0.83rem;font-weight:500;text-decoration:none;border:1px solid var(--border);color:var(--black);transition:background .15s}
+.pc-cta:hover{background:var(--light)}
+.pc.featured .pc-cta{background:#fff;color:var(--black);border:none}
+.pc.featured .pc-cta:hover{opacity:0.9}
+
+.cta-band{background:var(--black);color:#fff;padding:4.5rem 2.5rem;text-align:center}
+.cta-band h2{font-family:'Instrument Serif',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:400;margin-bottom:0.6rem}
+.cta-band p{color:#888;font-size:0.9rem;margin-bottom:1.75rem;font-weight:300}
+.btn-white{background:#fff;color:var(--black);padding:0.8rem 2.2rem;border-radius:8px;font-size:0.92rem;font-weight:500;text-decoration:none;display:inline-block;transition:opacity .15s}
+.btn-white:hover{opacity:0.88}
+
+footer{padding:1.75rem 2.5rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.footer-logo{font-family:'Instrument Serif',serif;font-size:1.05rem;color:var(--black)}
+.footer-logo span{color:var(--gold)}
+.footer-copy{font-size:0.76rem;color:var(--gray)}
+
+@media(max-width:768px){
+  nav{padding:0 1.25rem}
+  .nav-links{display:none}
+  .hero{grid-template-columns:1fr;padding:3.5rem 1.25rem 3rem;gap:2.5rem}
+  .trust,.section,.pricing{padding:3.5rem 1.25rem}
+  .feat-grid,.steps,.price-grid{grid-template-columns:1fr}
+  .how{padding:3.5rem 1.25rem}
+  .waitlist{padding:3.5rem 1.25rem}
+  footer{padding:1.5rem 1.25rem;flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">jusaeyo<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="#waitlist" class="btn-sm btn-outline">Join waitlist</a>
+    <a href="chat.html" class="btn-sm btn-dark">Try it →</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div>
+    <div class="hero-eyebrow">Your AI buddy in Korea</div>
+    <h1>Korea, but in<br><em>plain English.</em></h1>
+    <p class="hero-sub">No more switching between apps. No more guessing what buttons mean. Just tell Jusaeyo what you need — it handles the rest.</p>
+    <div class="hero-ctas">
+      <a href="chat.html" class="btn-primary">Try it now →</a>
+      <a href="#how" class="btn-secondary">See how it works</a>
+    </div>
+    <p class="hero-note">Free to try · No credit card needed</p>
+  </div>
+  <div>
+    <div class="demo-card">
+      <div class="demo-top">
+        <div class="demo-av">주</div>
+        <div>
+          <div class="demo-name">Jusaeyo</div>
+          <div class="demo-status"><span class="odot"></span> Ready to help</div>
+        </div>
+      </div>
+      <div class="msg-row u">
+        <div class="av u">E</div>
+        <div class="bub u">Book me a table for 2 tonight near Gwanghwamun, 7:30pm. Italian 🍝</div>
+      </div>
+      <div class="msg-row">
+        <div class="av a">주</div>
+        <div class="bub a">
+          Found a great spot! 👇
+          <div class="cbox">
+            <div class="crow"><span class="cl">Restaurant</span><span>Pasta Oggi 광화문</span></div>
+            <div class="crow"><span class="cl">Time</span><span>Tonight · 7:30 PM · 2 ppl</span></div>
+            <div class="crow"><span class="cl">Cost</span><span>~₩35,000 / person</span></div>
+            <div class="cbtns">
+              <button class="cbtn y" onclick="this.textContent='Booked! ✓';this.style.background='#16a34a'">Confirm</button>
+              <button class="cbtn n">Other options</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-input-wrap">
+        <div class="demo-input-row">
+          <input class="demo-input" type="text" placeholder="What do you need in Korea?" id="demo-inp" onkeydown="if(event.key==='Enter')window.location.href='chat.html'"/>
+          <button class="demo-send" onclick="window.location.href='chat.html'">→</button>
+        </div>
+        <div class="service-chips">
+          <a href="chat.html?q=restaurant" class="chip">🍽️ Catch Table</a>
+          <a href="chat.html?q=taxi" class="chip">🚖 Kakao T</a>
+          <a href="chat.html?q=uber" class="chip">🚗 Uber</a>
+          <a href="chat.html?q=delivery" class="chip">🛵 Baemin</a>
+          <a href="chat.html?q=map" class="chip">🗺️ Naver Maps</a>
+          <a href="chat.html?q=delivery2" class="chip">📦 Coupang Eats</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="trust">
+  <div class="trust-label">Works with</div>
+  <div class="trust-items">
+    <span class="trust-item">Catch Table</span>
+    <span class="trust-item">Kakao T</span>
+    <span class="trust-item">Uber Korea</span>
+    <span class="trust-item">Naver Maps</span>
+    <span class="trust-item">Baemin</span>
+    <span class="trust-item">Coupang Eats</span>
+  </div>
+</div>
+
+<section class="section" id="services">
+  <div class="sec-header">
+    <div>
+      <div class="sec-kicker">What it does</div>
+      <div class="sec-title">Everything you need,<br>all in one place.</div>
+    </div>
+    <div class="sec-sub">Restaurants, rides, maps — one assistant handles it all in English. No more juggling.</div>
+  </div>
+  <div class="feat-grid">
+    <div class="feat-item"><div class="feat-num">01</div><div class="feat-icon">🍽️</div><div class="feat-name">Restaurant booking</div><div class="feat-desc">Catch Table & Naver Reservations. Find, compare, and book top spots — in English.</div><span class="feat-tag ft-live">Live</span></div>
+    <div class="feat-item"><div class="feat-num">02</div><div class="feat-icon">🚖</div><div class="feat-name">Taxi & rides</div><div class="feat-desc">Picks the best option between Uber and Kakao T based on your card and location.</div><span class="feat-tag ft-live">Live</span></div>
+    <div class="feat-item"><div class="feat-num">03</div><div class="feat-icon">🗺️</div><div class="feat-name">Navigation</div><div class="feat-desc">Naver Maps accuracy, English directions. Stop switching between two map apps.</div><span class="feat-tag ft-live">Live</span></div>
+    <div class="feat-item"><div class="feat-num">04</div><div class="feat-icon">🏥</div><div class="feat-name">Medical help</div><div class="feat-desc">Find English-speaking clinics near you and book a slot — even at 2 AM.</div><span class="feat-tag ft-soon">Coming soon</span></div>
+    <div class="feat-item"><div class="feat-num">05</div><div class="feat-icon">🛵</div><div class="feat-name">Food delivery</div><div class="feat-desc">Baemin & Coupang Eats, menus translated, orders placed. Eat what you actually want.</div><span class="feat-tag ft-soon">Coming soon</span></div>
+    <div class="feat-item"><div class="feat-num">06</div><div class="feat-icon">🏛️</div><div class="feat-name">Admin stuff</div><div class="feat-desc">Alien registration, address changes, government forms — guided in plain English.</div><span class="feat-tag ft-soon">Coming soon</span></div>
+  </div>
+</section>
+
+<section class="how" id="how">
+  <div class="how-inner">
+    <div class="sec-kicker">How it works</div>
+    <div class="sec-title" style="margin-top:0.5rem">Seriously, three steps.</div>
+    <div class="steps">
+      <div class="step"><div class="step-n">01</div><h3>Connect once</h3><p>Log in to Catch Table, Kakao T, or whatever you need — just once. Your info stays on your device, not our servers.</p></div>
+      <div class="step"><div class="step-n">02</div><h3>Just say it</h3><p>Type what you want in English. Jusaeyo figures out which Korean app to use and does the whole thing for you.</p></div>
+      <div class="step"><div class="step-n">03</div><h3>Tap to confirm</h3><p>We always check before doing anything final. One tap and it's done — with a confirmation you can actually read.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="waitlist" id="waitlist">
+  <div class="wl-emoji">👋</div>
+  <div class="wl-title">Be first in line.</div>
+  <p class="wl-sub">We're launching soon. Drop your email and we'll give you early access + 10 bonus actions when we open.</p>
+  <div class="wl-form">
+    <input class="wl-input" type="email" id="email-input" placeholder="your@email.com"/>
+    <button class="wl-btn" onclick="joinWL()">Count me in →</button>
+  </div>
+  <p class="wl-note">No spam. Just your invite when it's ready.</p>
+  <div class="wl-success" id="wl-success">✓ You're in! We'll hit you up when early access opens 🎉</div>
+</section>
+
+<section class="pricing" id="pricing">
+  <div class="sec-kicker">Pricing</div>
+  <div class="sec-title" style="margin-top:0.4rem">Pay for your trip,<br>not a subscription.</div>
+  <p class="pricing-sub">3 free actions to start. No card needed.</p>
+  <div class="price-grid">
+    <div class="pc"><div class="pc-tier">Starter</div><div class="pc-price">$5</div><div class="pc-meta">30 actions · 90 days</div><div class="pc-best">Good for a quick trip</div><ul class="pc-list"><li>Restaurant bookings</li><li>Taxi routing</li><li>English navigation</li></ul><a href="chat.html" class="pc-cta">Try free →</a></div>
+    <div class="pc featured"><div class="pc-badge">Most popular</div><div class="pc-tier">Traveler</div><div class="pc-price">$19</div><div class="pc-meta">200 actions · 90 days</div><div class="pc-best">For a full week or more</div><ul class="pc-list"><li>Everything in Starter</li><li>Priority reservations</li><li>Top up anytime</li><li>24/7 support</li></ul><a href="chat.html" class="pc-cta">Try free →</a></div>
+    <div class="pc"><div class="pc-tier">Resident</div><div class="pc-price">$59</div><div class="pc-meta">1,000 actions · 90 days</div><div class="pc-best">For long-term stays</div><ul class="pc-list"><li>Everything in Traveler</li><li>Medical bookings</li><li>Food delivery</li><li>Government admin</li></ul><a href="chat.html" class="pc-cta">Try free →</a></div>
+  </div>
+</section>
+
+<div class="cta-band">
+  <h2>Ready to actually enjoy Korea? 🇰🇷</h2>
+  <p>Stop struggling with apps you can't read. We've got you.</p>
+  <a href="chat.html" class="btn-white">Try Jusaeyo free →</a>
+</div>
+
+<footer>
+  <div class="footer-logo">jusaeyo<span>.</span></div>
+  <div class="footer-copy">© 2025 Jusaeyo · Korea, but in plain English.</div>
+</footer>
+
+<script>
+function joinWL(){
+  const email=document.getElementById('email-input').value.trim();
+  if(!email||!email.includes('@')){
+    const inp=document.getElementById('email-input');
+    inp.style.borderColor='#ef4444';
+    setTimeout(()=>{inp.style.borderColor=''},1500);
+    return;
+  }
+  document.querySelector('.wl-form').style.display='none';
+  document.querySelector('.wl-note').style.display='none';
+  document.getElementById('wl-success').style.display='block';
+}
+</script>
+</body>
+</html>
